@@ -1,0 +1,22 @@
+- Create a repository
+- initialize the repository
+- node_modules, package.json, and package.json.lock file.
+- install express
+- Create a Server
+- Listen on some port
+- Write Request Handlers like /test, /hello
+- install nodemon and update scripts inside package.json file
+- What are dependencies
+- Difference between package.json and package.lock.json file
+- what is the use of -g while installing any package
+- Difference between caret and tilde symbol (^, ~)
+- When npm allo update in package version if that is possible
+
+- Initialize the git
+- Create a remote repo on github
+- Push all code to remote origin
+- should we push package.lock.json file on remote origin?
+- Play with routes and route extensions .hello, /, .hello/2, /xyz
+- order of routes matter a lot
+- install postman, create workspace then collection and then add api for testing
+- Play with routes and rout handlers for every HTTP Method( GET, POST, PATCH, DELETE)
