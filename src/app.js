@@ -2,11 +2,13 @@ const express = require("express");
 
 const app = express();
 
-app.use("/hello/2", (req, res) => {
-  res.send("Hello 2");
-});
+// app.use("/hello/2", (req, res) => {
+//   res.send("Hello 2");
+// });
 
-app.use("/hello", (req, res) => {
+app.get("/hello/:userId/:blogId", (req, res) => {
+  //   console.log(req.query);
+  //   console.log(req.params);
   res.send("Hello Namastey Page");
 });
 
@@ -26,13 +28,13 @@ app.delete("/user", (req, res) => {
   res.send("User deleted Successfully!");
 });
 
-app.use("/test", (req, res) => {
-  res.send("Hello Test Page");
-});
+// app.use(/.*fly$/, (req, res) => {
+//   res.send("Hello Test Page");
+// });
 
-app.use("/", (req, res) => {
-  res.send("Hello Express Home Page");
-});
+// app.use("/", (req, res) => {
+//   res.send("Hello Express Home Page");
+// });
 
 app.listen(3000, () => {
   console.log("Server is listing on port:- 3000");

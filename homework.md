@@ -20,3 +20,6 @@
 - order of routes matter a lot
 - install postman, create workspace then collection and then add api for testing
 - Play with routes and rout handlers for every HTTP Method( GET, POST, PATCH, DELETE)
+- Play with routes path using (),\*, +, ?
+- Play with route path using regex /\*fly$/
+- Set Quer, Params and how to get access of those in code.
