@@ -23,3 +23,8 @@
 - Play with routes path using (),\*, +, ?
 - Play with route path using regex /\*fly$/
 - Set Quer, Params and how to get access of those in code.
+
+- Multiple Route Handlers - Play with the code
+- next()
+- next function with errors along with res.send()
+- app.use('/route', rh, rh2, rh3, rh4, rh5, rh6)

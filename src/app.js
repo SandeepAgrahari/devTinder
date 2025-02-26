@@ -6,6 +6,31 @@ const app = express();
 //   res.send("Hello 2");
 // });
 
+app.get(
+  "/route",
+  [
+    (req, res, next) => {
+      console.log("First route Handler");
+      // res.send("First Route Handler");
+      next();
+    },
+    (req, res, next) => {
+      console.log("Second Route Handler");
+      // res.send("Second Route Handler");
+      next();
+    },
+  ],
+  (req, res, next) => {
+    console.log("Third Route Handler");
+    // res.send("Third Route Handler");
+    next();
+  },
+  (req, res, next) => {
+    console.log("Fourth Route Handler");
+    res.send("Fourth Route Handler");
+  }
+);
+
 app.get("/hello/:userId/:blogId", (req, res) => {
   //   console.log(req.query);
   //   console.log(req.params);
