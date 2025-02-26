@@ -30,3 +30,6 @@
 - app.use('/route', rh, rh2, rh3, rh4, rh5, rh6)
 - what is middleware. why we need it.
 - how express js basically handles requests behind the scenes.
+- difference between app.all() and app.use()
+- write a dummy auth middleware for admin
+- write a dummy auth middleware for all users except /user/login
