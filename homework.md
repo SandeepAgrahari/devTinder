@@ -28,3 +28,5 @@
 - next()
 - next function with errors along with res.send()
 - app.use('/route', rh, rh2, rh3, rh4, rh5, rh6)
+- what is middleware. why we need it.
+- how express js basically handles requests behind the scenes.

@@ -6,28 +6,22 @@ const app = express();
 //   res.send("Hello 2");
 // });
 
+//This will not run for /route path. but if we use app.use() then it will also run for /route path
+// Express => Execure middleware chain => untill it reaches to Request handler where we return the response
+app.use("/", (req, res, next) => {
+  console.log("Hello");
+  next();
+});
+
 app.get(
   "/route",
-  [
-    (req, res, next) => {
-      console.log("First route Handler");
-      // res.send("First Route Handler");
-      next();
-    },
-    (req, res, next) => {
-      console.log("Second Route Handler");
-      // res.send("Second Route Handler");
-      next();
-    },
-  ],
   (req, res, next) => {
-    console.log("Third Route Handler");
-    // res.send("Third Route Handler");
+    console.log("1st console");
     next();
   },
-  (req, res, next) => {
-    console.log("Fourth Route Handler");
-    res.send("Fourth Route Handler");
+  (req, res) => {
+    console.log("2nd consoole");
+    res.send("2nd Response");
   }
 );
 
