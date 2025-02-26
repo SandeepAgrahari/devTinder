@@ -17,6 +17,7 @@
   "author": "Sandeep Kumar",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "mongoose": "^8.10.2"
   }
 }
