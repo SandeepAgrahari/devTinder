@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
+require("dotenv").config();
+
+const mongoURI = process.env.MONGO_URI;
 
 async function connectDB() {
-  await mongoose.connect(
-    "mongodb+srv://sagrahari:eeejfeK5PwrXNupt@cluster0.8lvarsh.mongodb.net/devTinder"
-  );
+  await mongoose.connect(mongoURI);
 }
 
 module.exports = connectDB;
