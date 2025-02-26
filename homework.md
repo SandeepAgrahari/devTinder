@@ -39,3 +39,7 @@
 - Install mongoose libraray
 - connect your application to the database using "connection-url/devTinder"
 - call the connectDB function and connect databse before starting the application on port 4000
+- create an userSchema and user model
+- create POST /signup API to add data into database
+- push some documents using API calls from postman
+- Error handling using try and catch
