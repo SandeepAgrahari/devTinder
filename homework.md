@@ -51,3 +51,7 @@
 - API - Get user by email
 - API - Feed API - /feed - get all users from database
 - API - get user by ID
+- create a delete user API
+- difference between PATCH and PUT
+- Explore mangoose model API
+- Explore options in findByIdAndUpdate() method

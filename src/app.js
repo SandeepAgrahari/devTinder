@@ -20,6 +20,7 @@ app.get("/user", async (req, res) => {
   const userEmail = req.body.email;
   try {
     const user = await User.findOne({ email: userEmail });
+    // const user = await User.findById("67bf03a06651d55219f784df");
     if (!user) {
       res.status(404).send("No user found with given email!");
     } else {
@@ -43,6 +44,38 @@ app.get("/feed", async (req, res) => {
       res.send("No Users are there in Database");
     } else {
       res.send(users);
+    }
+  } catch (e) {
+    res.status(400).send("Bad Request!");
+  }
+});
+
+app.patch("/user", async (req, res) => {
+  const userId = req.body.userId;
+  const data = req.body;
+  try {
+    const user = await User.findByIdAndUpdate(userId, data, {
+      returnDocument: "after",
+    });
+    console.log(user);
+    if (!user) {
+      res.status(404).send("No User found with given data");
+    } else {
+      res.send(user);
+    }
+  } catch (e) {
+    res.status(400).send("Bad Request!");
+  }
+});
+
+app.delete("/user", async (req, res) => {
+  const userId = req.body.userId;
+  try {
+    const user = await User.findByIdAndDelete(userId);
+    if (!user) {
+      res.status(404).send("No userr found!");
+    } else {
+      res.send("User deleted Successfully!");
     }
   } catch (e) {
     res.status(400).send("Bad Request!");
