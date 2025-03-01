@@ -50,15 +50,24 @@ app.get("/feed", async (req, res) => {
   }
 });
 
-app.patch("/user", async (req, res) => {
-  const userId = req.body.userId;
+app.patch("/user/:userId", async (req, res) => {
+  const userId = req.params?.userId;
   const data = req.body;
   try {
+    const UPDATE_ALLOWED = ["age, skills, lastName, photoUrl, gender, about"];
+    const isAllowed = Object.keys(data).every((key) =>
+      UPDATE_ALLOWED.includes(key)
+    );
+    if (!isAllowed) {
+      throw new Error("Update is not allowd ");
+    }
+    if (data?.skills.length > 10) {
+      throw new Error("Skills can not be more then 10");
+    }
     const user = await User.findByIdAndUpdate(userId, data, {
       returnDocument: "after",
       runValidators: true,
     });
-    console.log(user);
     if (!user) {
       res.status(404).send("No User found with given data");
     } else {

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const validator = require("validator");
 
 const userSchema = new mongoose.Schema(
   {
@@ -6,18 +7,22 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       minLength: [4, "First name must contains atleast 4 characters"],
+      maxLength: [20, "First name should be maximum 20 characters"],
       trim: true,
     },
     lastName: {
       type: String,
       trim: true,
+      minLength: [4, "First name must contains atleast 4 characters"],
+      maxLength: [20, "First name should be maximum 20 characters"],
     },
     email: {
       type: String,
-      match: [
-        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-        "Please enter a valid email address",
-      ],
+      validate(value) {
+        if (!validator.isEmail(value)) {
+          throw new Error("Email is not valid" + value);
+        }
+      },
       required: true,
       unique: [true, " Email is already there in system!"],
       trim: true,
@@ -25,11 +30,16 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      minLength: [6, "Password should contains at-least 6 characters"],
+      validate(value) {
+        if (!validator.isStrongPassword(value)) {
+          throw new Error("Please enter string password!");
+        }
+      },
     },
     age: {
       type: Number,
-      min: 18,
+      min: [18, "Age can not be less then 18"],
+      max: [80, "Age can not be less then 80"],
     },
     gender: {
       type: String,
@@ -43,13 +53,18 @@ const userSchema = new mongoose.Schema(
     },
     about: {
       type: String,
-      maxLength: [200, "Max allowed characters for this section is 200."],
+      maxLength: [100, "Max allowed characters for this section is 200."],
       trim: true,
     },
     photoUrl: {
       type: String,
       default:
         "https://www.pnrao.com/wp-content/uploads/2023/06/dummy-user-male.jpg",
+      validate(value) {
+        if (!validator.isURL(value)) {
+          throw new Error("Photo URL is not valid");
+        }
+      },
     },
     skills: {
       type: [String],
