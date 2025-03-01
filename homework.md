@@ -55,3 +55,9 @@
 - difference between PATCH and PUT
 - Explore mangoose model API
 - Explore options in findByIdAndUpdate() method
+
+- Explore schematype options from documentation
+- add required, unique, lowercase, min, minLength, trim, default etc
+- Create a custom validation function for gender
+- Improve the DB schema - Put all approprita validations on each field in schema
+- Add timestamp to the userSchema
