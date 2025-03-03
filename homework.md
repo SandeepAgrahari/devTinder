@@ -64,4 +64,9 @@
 - Add API level validation on Patch request & Signup POST Request
 - Data Senitization - Add API validaton for each fields
 - Install validator package
-- explore validator package functions and use validator functions for pa
+- explore validator package functions and use validator functions for photourl
+- NEVER TRUST req.body
+
+- validate data in signup API
+- install bcrypt package
+- Create Password Hash using bcrypt.hash & save the user with encrypted password
