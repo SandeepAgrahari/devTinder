@@ -1,13 +1,16 @@
 const express = require("express");
 const app = express();
 const bcrypt = require("bcrypt");
+const validator = require("validator");
+const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
 
 const { validateSignUp } = require("./utils/validation");
-
 const connectDB = require("./config/database");
 const User = require("./models/User");
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.post("/signup", async (req, res) => {
   try {
@@ -28,6 +31,43 @@ app.post("/signup", async (req, res) => {
   }
 });
 
+app.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email) {
+      throw new Error("Email is Required!");
+    }
+    if (!password) {
+      throw new Error("Password is Required!");
+    }
+    if (!validator.isEmail(email)) {
+      throw new Error("Invalid Email");
+    }
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      throw new Error("Invalid Credential!");
+    }
+    const isValidPassword = await bcrypt.compare(password, user.password);
+    if (isValidPassword) {
+      let token = await jwt.sign({ _id: user._id }, "DEV@Tinder#438");
+      res.cookie("token", token);
+      res.send("Login Successfully!");
+    } else {
+      throw new Error("Invalid Credential!");
+    }
+  } catch (e) {
+    res.status(400).send("Bad Request" + e.message);
+  }
+});
+
+app.get("/profile", (req, res) => {
+  try {
+    console.log(req.cookies);
+  } catch (e) {
+    res.status(400).send("Bad Request " + e.message);
+  }
+});
 app.get("/user", async (req, res) => {
   const userEmail = req.body.email;
   try {
