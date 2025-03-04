@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 const { validateSignUp } = require("./utils/validation");
 const connectDB = require("./config/database");
 const User = require("./models/User");
+const { userAuth } = require("./middleware/auth");
 
 app.use(express.json());
 app.use(cookieParser());
@@ -50,8 +51,10 @@ app.post("/login", async (req, res) => {
     }
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (isValidPassword) {
-      let token = await jwt.sign({ _id: user._id }, "DEV@Tinder#438");
-      res.cookie("token", token);
+      let token = await jwt.sign({ _id: user._id }, "DEV@Tinder#438", {
+        expiresIn: "7d",
+      });
+      res.cookie("token", token, { expires: new Date(Date.now() + 8 * 3600) });
       res.send("Login Successfully!");
     } else {
       throw new Error("Invalid Credential!");
@@ -61,7 +64,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/profile", async (req, res) => {
+app.get("/profile", userAuth, async (req, res) => {
   try {
     const { token } = req.cookies;
     if (!token) {
@@ -79,82 +82,16 @@ app.get("/profile", async (req, res) => {
     res.status(400).send("Bad Request " + e.message);
   }
 });
-app.get("/user", async (req, res) => {
-  const userEmail = req.body.email;
-  try {
-    const user = await User.findOne({ email: userEmail });
-    // const user = await User.findById("67bf03a06651d55219f784df");
-    if (!user) {
-      res.status(404).send("No user found with given email!");
-    } else {
-      res.send(user);
-    }
-    // const users = await User.find({ email: userEmail });
-    // if (users.length === 0) {
-    //   res.status(404).send("No user found with given email!");
-    // } else {
-    //   res.send(users);
-    // }
-  } catch (e) {
-    res.status(400).send("Bad Request!");
-  }
-});
 
-app.get("/feed", async (req, res) => {
+app.post("/sendConnectionRequest", userAuth, (req, res) => {
   try {
-    const users = await User.find({}, "-password");
-    if (users.length === 0) {
-      res.send("No Users are there in Database");
-    } else {
-      res.send(users);
-    }
-  } catch (e) {
-    res.status(400).send("Bad Request!");
-  }
-});
-
-app.patch("/user/:userId", async (req, res) => {
-  const userId = req.params?.userId;
-  const data = req.body;
-  try {
-    const UPDATE_ALLOWED = ["age, skills, lastName, photoUrl, gender, about"];
-    const isAllowed = Object.keys(data).every((key) =>
-      UPDATE_ALLOWED.includes(key)
-    );
-    if (!isAllowed) {
-      throw new Error("Update is not allowd ");
-    }
-    if (data?.skills.length > 10) {
-      throw new Error("Skills can not be more then 10");
-    }
-    const user = await User.findByIdAndUpdate(userId, data, {
-      returnDocument: "after",
-      runValidators: true,
-    });
-    if (!user) {
-      res.status(404).send("No User found with given data");
-    } else {
-      res.send(user);
-    }
+    const user = req.user;
+    res.send(user.firstName + " Connection Request Sent");
+    console.log("Connection Sent");
   } catch (e) {
     res.status(400).send("Bad Request! " + e.message);
   }
 });
-
-app.delete("/user", async (req, res) => {
-  const userId = req.body.userId;
-  try {
-    const user = await User.findByIdAndDelete(userId);
-    if (!user) {
-      res.status(404).send("No userr found!");
-    } else {
-      res.send("User deleted Successfully!");
-    }
-  } catch (e) {
-    res.status(400).send("Bad Request!");
-  }
-});
-
 connectDB()
   .then(() => {
     console.log("Database connected Successfully");
