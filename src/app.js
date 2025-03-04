@@ -61,9 +61,20 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/profile", (req, res) => {
+app.get("/profile", async (req, res) => {
   try {
-    console.log(req.cookies);
+    const { token } = req.cookies;
+    if (!token) {
+      throw new Error("Invalid Token!");
+    }
+    const decodeMessage = await jwt.verify(token, "DEV@Tinder#438");
+    const userId = decodeMessage._id;
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new Error("User is not found!");
+    } else {
+      res.send(user);
+    }
   } catch (e) {
     res.status(400).send("Bad Request " + e.message);
   }
