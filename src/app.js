@@ -49,11 +49,9 @@ app.post("/login", async (req, res) => {
     if (!user) {
       throw new Error("Invalid Credential!");
     }
-    const isValidPassword = await bcrypt.compare(password, user.password);
+    const isValidPassword = await user.validatePassword(password);
     if (isValidPassword) {
-      let token = await jwt.sign({ _id: user._id }, "DEV@Tinder#438", {
-        expiresIn: "7d",
-      });
+      let token = await user.getJwt();
       res.cookie("token", token, { expires: new Date(Date.now() + 8 * 3600) });
       res.send("Login Successfully!");
     } else {
@@ -87,7 +85,6 @@ app.post("/sendConnectionRequest", userAuth, (req, res) => {
   try {
     const user = req.user;
     res.send(user.firstName + " Connection Request Sent");
-    console.log("Connection Sent");
   } catch (e) {
     res.status(400).send("Bad Request! " + e.message);
   }
