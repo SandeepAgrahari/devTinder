@@ -85,3 +85,7 @@
 - Set the expiry of JWT token and cookies in 7 Days
 - Create User Schema Method for getJWT()
 - Create User Schema method to comparePassword using password input by user
+
+- Explore tinder app APIs through developer tool netwrok tab
+- List down the apis
+- Create multiple routes under respective routers
