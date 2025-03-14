@@ -3,10 +3,11 @@ const jwt = require("jsonwebtoken");
 
 const User = require("../models/User");
 const { userAuth } = require("../middleware/auth");
+const { validateProfileEditData } = require("../utils/validation");
 
 const profileRouter = express.Router();
 
-profileRouter.get("/profile", userAuth, async (req, res) => {
+profileRouter.get("/profile/view", userAuth, async (req, res) => {
   try {
     const { token } = req.cookies;
     if (!token) {
@@ -22,6 +23,26 @@ profileRouter.get("/profile", userAuth, async (req, res) => {
     }
   } catch (e) {
     res.status(400).send("Bad Request " + e.message);
+  }
+});
+
+profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
+  try {
+    if (!validateProfileEditData(req)) {
+      throw new Error("Bad Request - Update is not allowed!");
+    }
+    const loggedInUser = req.user;
+    Object.keys(req.body).forEach((key) => (loggedInUser[key] = req.body[key]));
+    const updatedUser = await loggedInUser.save();
+    if (updatedUser) {
+      // res.send("User details udated successfully!");
+      res.json({
+        message: "User details updated successfully!",
+        data: updatedUser,
+      });
+    }
+  } catch (e) {
+    res.status(400).send(e.message);
   }
 });
 

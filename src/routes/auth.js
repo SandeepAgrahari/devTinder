@@ -44,8 +44,10 @@ authRouter.post("/login", async (req, res) => {
     }
     const isValidPassword = await user.validatePassword(password);
     if (isValidPassword) {
+      const nextDay = new Date();
+      nextDay.setDate(nextDay.getDate() + 1);
       let token = await user.getJwt();
-      res.cookie("token", token, { expires: new Date(Date.now() + 8 * 3600) });
+      res.cookie("token", token, { expires: nextDay });
       res.send("Login Successfully!");
     } else {
       throw new Error("Invalid Credential!");
@@ -53,6 +55,13 @@ authRouter.post("/login", async (req, res) => {
   } catch (e) {
     res.status(400).send("Bad Request" + e.message);
   }
+});
+
+authRouter.post("/logout", async (req, res) => {
+  res.cookie("token", null, {
+    expires: new Date(Date.now()),
+  });
+  res.send("Logout Successfull!");
 });
 
 module.exports = authRouter;

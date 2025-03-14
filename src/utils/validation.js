@@ -13,6 +13,27 @@ const validateSignUp = (req) => {
   }
 };
 
+const validateProfileEditData = (req) => {
+  if (!req?.body || Object.keys(req.body).length === 0) {
+    throw new Error("Request body should not be empty!");
+  }
+  const allowedFields = [
+    "firstName",
+    "lastName",
+    "email",
+    "age",
+    "gender",
+    "about",
+    "photoUrl",
+    "skills",
+  ];
+  const isUpdateAllowed = Object.keys(req.body).every((field) =>
+    allowedFields.includes(field)
+  );
+  return isUpdateAllowed;
+};
+
 module.exports = {
   validateSignUp,
+  validateProfileEditData,
 };
