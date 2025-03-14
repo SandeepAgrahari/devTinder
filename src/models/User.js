@@ -90,7 +90,6 @@ userSchema.methods.validatePassword = async function (passwordEnteredByUser) {
     passwordEnteredByUser,
     passwordHash
   );
-  console.log(isPasswordValid);
   return isPasswordValid;
 };
 
