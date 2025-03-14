@@ -89,3 +89,7 @@
 - Explore tinder app APIs through developer tool netwrok tab
 - List down the apis
 - Create multiple routes under respective routers
+- Red Documentation of express Router
+- Create route folder for managing auth, profile and request routers
+- Create authRouter, profileRouter and requestRouter
+- Import these routers in app.js
