@@ -1,9 +1,13 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const User = require("../models/User");
 const { userAuth } = require("../middleware/auth");
-const { validateProfileEditData } = require("../utils/validation");
+const {
+  validateProfileEditData,
+  validateChangePasswordData,
+} = require("../utils/validation");
 
 const profileRouter = express.Router();
 
@@ -40,6 +44,32 @@ profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
         message: "User details updated successfully!",
         data: updatedUser,
       });
+    }
+  } catch (e) {
+    res.status(400).send(e.message);
+  }
+});
+
+profileRouter.patch("/profile/password", userAuth, async (req, res) => {
+  try {
+    if (!validateChangePasswordData(req)) {
+      throw new Error("Bad Request - Password can't be change!");
+    }
+    const loggedInUser = req.user;
+    const isValidCurrentPassword = await loggedInUser.validatePassword(
+      req.body.currentPassword
+    );
+    if (!isValidCurrentPassword) {
+      throw new Error("Invalid Password!");
+    }
+    if (req.body.newPassword !== req.body.confirmNewPassword) {
+      throw new Error("New password and confirm new password is not same!");
+    }
+    const hashPassword = await bcrypt.hash(req.body.newPassword, 10);
+    loggedInUser["password"] = hashPassword;
+    const updatedUser = await loggedInUser.save();
+    if (updatedUser) {
+      res.send("Password changes successfully!");
     }
   } catch (e) {
     res.status(400).send(e.message);

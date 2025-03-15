@@ -33,7 +33,23 @@ const validateProfileEditData = (req) => {
   return isUpdateAllowed;
 };
 
+const validateChangePasswordData = (req) => {
+  if (!req?.body || Object.keys(req.body).length === 0) {
+    throw new Error("Request body should not be empty!");
+  }
+  const allowedFields = [
+    "currentPassword",
+    "newPassword",
+    "confirmNewPassword",
+  ];
+  const isUpdateAllowed = Object.keys(req.body).every((field) =>
+    allowedFields.includes(field)
+  );
+  return isUpdateAllowed;
+};
+
 module.exports = {
   validateSignUp,
   validateProfileEditData,
+  validateChangePasswordData,
 };
