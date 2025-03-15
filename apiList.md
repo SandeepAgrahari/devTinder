@@ -12,12 +12,12 @@
     PATCH /profile/edit
     PATCH /profile/password
 
-##connectionRouter
+##connectionRequestRouter
 
-    POST /connection/send/interested/:userId
-    POST /connection/send/ignored/:userId
-    POST /connection/review/accepted/:requestId
-    POST /connection/review/rejected/:requestId
+    POST /request/send/interested/:userId
+    POST /request/send/ignored/:userId
+    POST /request/review/accepted/:requestId
+    POST /request/review/rejected/:requestId
 
 ##userRouter
 
