@@ -110,3 +110,6 @@
 - Read the artical of compound indexs -
 
 - Create api with proper validation POST /request/review/:status/:requestId"
+- Thought Process - GET vs POST
+- Read about ref and populate in mongoose - https://mongoosejs.com/docs/populate.html
+- Create api GET /user/requests/received with all the checks
