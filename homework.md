@@ -97,3 +97,14 @@
 - Create PATCH /Profile/edit Edit API
 - Create PATCH /profile/password API => forgot password API
 - Make sure you validate all data in every POST, PATCH APIs
+
+- Create Connection Request Schema
+- Create send connection request API
+- Proper validation of data
+- Think about all corner cases
+- $or and $and (logical) query in mongodb - https://www.mongodb.com/docs/manual/reference/operator/query-logical/
+  and comparison Query - https://www.mongodb.com/docs/manual/reference/operator/query-comparison/
+- Read more about index in Mongodb
+- Why do we need index in DB?
+- What is advantages and disadvantages of creating it
+- Read the artical of compound indexs -
