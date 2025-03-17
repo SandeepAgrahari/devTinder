@@ -1,6 +1,7 @@
 const express = require("express");
 const { userAuth } = require("../middleware/auth");
 const ConnectionRequest = require("../models/ConnectionRequest");
+const User = require("../models/user");
 
 const userRouter = express.Router();
 
@@ -52,6 +53,32 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
     });
   } catch (e) {
     res.status(400).send("Bad Request - " + e.message);
+  }
+});
+
+userRouter.get("/user/feed", userAuth, async (req, res) => {
+  try {
+    const loggedInUser = req.user;
+
+    const connections = await ConnectionRequest.find({
+      $or: [{ fromUserId: loggedInUser._id }, { toUserId: loggedInUser._id }],
+    }).select("fromUserId toUserId");
+
+    const hideUsers = new Set();
+    connections.forEach((user) => {
+      hideUsers.add(user.fromUserId.toString());
+      hideUsers.add(user.toUserId.toString());
+    });
+
+    const users = await User.find({
+      $and: [
+        { _id: { $nin: Array.from(hideUsers) } },
+        { _id: { $ne: loggedInUser._id } },
+      ],
+    }).select(USER_SAFE_DATA);
+    res.json({ message: "Users fetched successfully!", data: users });
+  } catch (e) {
+    res.status(400).send("Bad Request " + e.message);
   }
 });
 
