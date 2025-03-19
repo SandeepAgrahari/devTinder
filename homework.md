@@ -114,3 +114,6 @@
 - Read about ref and populate in mongoose - https://mongoosejs.com/docs/populate.html
 - Create api GET /user/requests/received with all the checks
 - Create API GET /user/connections
+- Create Feed API GET /feed
+- implement Pagination for Feed API using skip and limit
+- explore $ne, $nin, $and, select in mongodb
