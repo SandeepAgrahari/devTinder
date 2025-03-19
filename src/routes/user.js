@@ -59,7 +59,9 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
 userRouter.get("/user/feed", userAuth, async (req, res) => {
   try {
     const loggedInUser = req.user;
-
+    const page = parseInt(req.query.page) || 1;
+    let limit = parseInt(req.query.limit) || 10;
+    limit = limit > 50 ? 50 : limit;
     const connections = await ConnectionRequest.find({
       $or: [{ fromUserId: loggedInUser._id }, { toUserId: loggedInUser._id }],
     }).select("fromUserId toUserId");
@@ -69,13 +71,16 @@ userRouter.get("/user/feed", userAuth, async (req, res) => {
       hideUsers.add(user.fromUserId.toString());
       hideUsers.add(user.toUserId.toString());
     });
-
+    const skip = (page - 1).limit;
     const users = await User.find({
       $and: [
         { _id: { $nin: Array.from(hideUsers) } },
         { _id: { $ne: loggedInUser._id } },
       ],
-    }).select(USER_SAFE_DATA);
+    })
+      .select(USER_SAFE_DATA)
+      .skip(skip)
+      .limit(limit);
     res.json({ message: "Users fetched successfully!", data: users });
   } catch (e) {
     res.status(400).send("Bad Request " + e.message);
