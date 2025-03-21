@@ -15,7 +15,7 @@ profileRouter.get("/profile/view", userAuth, async (req, res) => {
   try {
     const { token } = req.cookies;
     if (!token) {
-      throw new Error("Invalid Token!");
+      return res.status(401).send("Invalid Token!");
     }
     const decodeMessage = await jwt.verify(token, "DEV@Tinder#438");
     const userId = decodeMessage._id;
