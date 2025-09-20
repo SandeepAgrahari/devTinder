@@ -26,6 +26,7 @@ const userSchema = new mongoose.Schema(
         }
       },
       required: true,
+      lowercase: true,
       unique: [true, " Email is already there in system!"],
       trim: true,
     },
