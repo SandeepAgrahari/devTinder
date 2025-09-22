@@ -30,4 +30,4 @@ connectDB()
       console.log("Server is listing on port:- 3000");
     });
   })
-  .catch((e) => console.log("database can not be connected!"));
+  .catch((e) => console.log("database can not be connected!", e.message));
