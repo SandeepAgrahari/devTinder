@@ -27,7 +27,7 @@ connectDB()
   .then(() => {
     console.log("Database connected Successfully");
     app.listen(7070, () => {
-      console.log("Server is listing on port:- 3000");
+      console.log("Server is listing on port:- 7070");
     });
   })
   .catch((e) => console.log("database can not be connected!", e.message));
