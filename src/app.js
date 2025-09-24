@@ -1,4 +1,5 @@
 const express = require("express");
+require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const connectDB = require("./config/database");
 const cors = require("cors");
@@ -26,8 +27,8 @@ app.use("/", userRouter);
 connectDB()
   .then(() => {
     console.log("Database connected Successfully");
-    app.listen(7070, () => {
-      console.log("Server is listing on port:- 7070");
+    app.listen(process.env.PORT, () => {
+      console.log(`Server is listing on port:- ${process.env.PORT}`);
     });
   })
   .catch((e) => console.log("database can not be connected!", e.message));

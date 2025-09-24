@@ -1,4 +1,5 @@
 const express = require("express");
+// require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
@@ -17,7 +18,7 @@ profileRouter.get("/profile/view", userAuth, async (req, res) => {
     if (!token) {
       return res.status(401).send("Invalid Token!");
     }
-    const decodeMessage = await jwt.verify(token, "DEV@Tinder#438");
+    const decodeMessage = await jwt.verify(token, process.env.JWT_SECRET_KEY);
     const userId = decodeMessage._id;
     const user = await User.findById(userId);
     if (!user) {
