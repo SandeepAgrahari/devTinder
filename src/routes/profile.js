@@ -1,5 +1,4 @@
 const express = require("express");
-// require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
@@ -40,7 +39,6 @@ profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
     Object.keys(req.body).forEach((key) => (loggedInUser[key] = req.body[key]));
     const updatedUser = await loggedInUser.save();
     if (updatedUser) {
-      // res.send("User details udated successfully!");
       res.json({
         message: "User details updated successfully!",
         data: updatedUser,
